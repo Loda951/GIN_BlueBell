@@ -1,0 +1,18 @@
+{"level":"ERROR","time":"2024-11-03T21:39:00.938+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"dial tcp 127.0.0.1:13306: connect: connection refused"}
+{"level":"ERROR","time":"2024-11-03T21:39:31.131+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"dial tcp 127.0.0.1:13306: connect: connection refused"}
+{"level":"ERROR","time":"2024-11-03T21:39:36.622+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"dial tcp 127.0.0.1:13306: connect: connection refused"}
+{"level":"ERROR","time":"2024-11-03T21:40:23.641+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"Error 1045 (28000): Access denied for user 'cyan'@'localhost' (using password: YES)"}
+{"level":"ERROR","time":"2024-11-03T21:40:50.360+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"Error 1045 (28000): Access denied for user 'cyan'@'localhost' (using password: YES)"}
+{"level":"ERROR","time":"2024-11-03T21:41:33.976+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"Error 1045 (28000): Access denied for user 'cyan'@'localhost' (using password: YES)"}
+{"level":"ERROR","time":"2024-11-03T21:46:45.242+0800","caller":"mysql/mysql.go:25","msg":"connect DB failed","error":"Error 1045 (28000): Access denied for user 'cyan'@'localhost' (using password: YES)"}
+{"level":"INFO","time":"2024-11-18T18:03:10.156+0800","caller":"Gin_Scaffold/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2024-11-18T18:03:10.158+0800","caller":"Gin_Scaffold/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2024-11-19T18:31:23.495+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-19T18:31:23.522+0800","caller":"mysql/mysql.go:20","msg":"connect DB failed","error":"dial tcp: lookup tcp/#{config.Port}: unknown port"}
+{"level":"DEBUG","time":"2024-11-19T18:32:25.918+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-19T18:32:25.942+0800","caller":"mysql/mysql.go:20","msg":"connect DB failed","error":"dial tcp: lookup tcp/#{config.Port}: unknown port"}
+{"level":"DEBUG","time":"2024-11-19T18:35:21.293+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-19T18:35:38.463+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-19T18:36:50.039+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-19T18:36:54.340+0800","caller":"Gin_Scaffold/main.go:77","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2024-11-19T18:36:54.340+0800","caller":"Gin_Scaffold/main.go:86","msg":"Server exiting"}
