@@ -1,6 +1,7 @@
 package router
 
 import (
+	"bluebell/controller"
 	"bluebell/logger"
 	"net/http"
 
@@ -14,5 +15,8 @@ func SetupRouter() *gin.Engine {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "ok")
 	})
+
+	// 注册
+	router.POST("/signup", controller.SignUpHandler)
 	return router
 }
