@@ -1,8 +1,9 @@
-module Gin_Scaffold
+module bluebell
 
 go 1.22
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-redis/redis v6.15.9+incompatible

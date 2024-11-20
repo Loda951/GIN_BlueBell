@@ -1,7 +1,7 @@
 package router
 
 import (
-	"Gin_Scaffold/logger"
+	"bluebell/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

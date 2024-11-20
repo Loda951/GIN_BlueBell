@@ -16,3 +16,15 @@
 {"level":"DEBUG","time":"2024-11-19T18:36:50.039+0800","caller":"Gin_Scaffold/main.go:37","msg":"logger init success..."}
 {"level":"INFO","time":"2024-11-19T18:36:54.340+0800","caller":"Gin_Scaffold/main.go:77","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2024-11-19T18:36:54.340+0800","caller":"Gin_Scaffold/main.go:86","msg":"Server exiting"}
+{"level":"DEBUG","time":"2024-11-20T16:12:50.886+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:14:30.305+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:15:29.811+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:15:54.762+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:17:28.489+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:22:15.255+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:22:38.096+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:23:52.553+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:24:13.620+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-20T16:31:40.327+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-20T16:31:46.236+0800","caller":"bluebell/main.go:83","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2024-11-20T16:31:46.237+0800","caller":"bluebell/main.go:92","msg":"Server exiting"}

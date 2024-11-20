@@ -1,11 +1,12 @@
 package main
 
 import (
-	"Gin_Scaffold/DAO/mysql"
-	"Gin_Scaffold/DAO/redis"
-	"Gin_Scaffold/logger"
-	"Gin_Scaffold/router"
-	"Gin_Scaffold/settings"
+	"bluebell/DAO/mysql"
+	"bluebell/DAO/redis"
+	"bluebell/logger"
+	snowflake "bluebell/pkg/snowFlake"
+	"bluebell/router"
+	"bluebell/settings"
 	"context"
 	"errors"
 	"fmt"
@@ -49,6 +50,11 @@ func main() {
 		return
 	}
 	defer redis.CloseRedis()
+
+	if err := snowflake.Init(settings.Config.StartTime, settings.Config.MachineID); err != nil {
+		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
 
 	// 5. 注册路由
 	r := router.SetupRouter()

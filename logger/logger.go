@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"Gin_Scaffold/settings"
+	"bluebell/settings"
 	"net"
 	"net/http"
 	"net/http/httputil"
