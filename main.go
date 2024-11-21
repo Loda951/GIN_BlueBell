@@ -3,6 +3,7 @@ package main
 import (
 	"bluebell/DAO/mysql"
 	"bluebell/DAO/redis"
+	"bluebell/controller"
 	"bluebell/logger"
 	snowflake "bluebell/pkg/snowFlake"
 	"bluebell/router"
@@ -51,8 +52,15 @@ func main() {
 	}
 	defer redis.CloseRedis()
 
+	// 初始化雪花分布式算法
 	if err := snowflake.Init(settings.Config.StartTime, settings.Config.MachineID); err != nil {
 		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
+
+	// 初始化gin 内置validator翻译器
+	if err := controller.InitTrans("zh"); err != nil {
+		fmt.Printf("init trans failed, err:%v\n", err)
 		return
 	}
 
