@@ -8,6 +8,13 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// 错误变量
+var (
+	ErrorUserExists      = errors.New("user already exists")
+	ErrorUserNotFound    = errors.New("user not found")
+	ErrorInvalidPassword = errors.New("invalid password")
+)
+
 // 把每一个数据库操作封装成一个函数
 // 待logic层根据业务需求调用
 
@@ -19,7 +26,7 @@ func CheckUserExist(username string) (err error) {
 		return err
 	}
 	if count > 0 {
-		return errors.New("用户已存在")
+		return ErrorUserExists
 	}
 	return nil
 }
@@ -41,7 +48,7 @@ func LogIn(user *models.User) (err error) {
 	var queryUser models.User
 	err = db.Get(&queryUser, sqlStr, user.Username)
 	if errors.Is(err, sql.ErrNoRows) {
-		return errors.New("用户不存在")
+		return ErrorUserNotFound
 	}
 	if err != nil {
 		// 查询数据库失败
@@ -49,7 +56,7 @@ func LogIn(user *models.User) (err error) {
 	}
 	// 判断密码是否正确
 	if !checkPassword(queryUser.Password, user.Password) {
-		return errors.New("密码错误")
+		return ErrorInvalidPassword
 	}
 	return
 }

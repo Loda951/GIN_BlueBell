@@ -1,10 +1,10 @@
 package controller
 
 import (
+	"bluebell/DAO/mysql"
 	"bluebell/logic"
 	"bluebell/models"
 	"errors"
-	"net/http"
 
 	"github.com/go-playground/validator/v10"
 
@@ -18,35 +18,33 @@ func SignUpHandler(ctx *gin.Context) {
 	p := new(models.ParamsSignUp)
 	// 从 HTTP 请求中提取参数值，并将这些值绑定到开发者定义的结构体中
 	if err := ctx.ShouldBindJSON(&p); err != nil {
-		zap.L().Error("SignUp with invalid param", zap.Error(err))
-		// 判断error是不是validator的错误 是的话翻译 不是不翻译
-		var errs validator.ValidationErrors
-		ok := errors.As(err, &errs)
+		zap.L().Error("Sign up with invalid param", zap.Error(err))
+		// 判断error是不是validator的错误
+		var validatorErr validator.ValidationErrors
+		// 是否属于validatorErr
+		ok := errors.As(err, &validatorErr)
+		// 不是validator的错误类型返回原error
 		if !ok {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ResponseError(ctx, CodeInvalidParam)
 			return
 		}
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": removeTopStruct(errs.Translate(trans)),
-		})
+		// 是validator的错误类型 翻译错误并返回
+		ResponseErrorWithMsg(ctx, CodeInvalidParam, removeTopStruct(validatorErr.Translate(trans)))
 		return
-
 	}
 
 	// 2 业务处理
 	if err := logic.SignUp(p); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"msg": "注册失败",
-		})
+		if errors.Is(err, mysql.ErrorUserExists) {
+			ResponseError(ctx, CodeUserExist)
+			return
+		}
+		ResponseError(ctx, CodeServerBusy)
 		return
 	}
 
 	// 3 返回响应
-	ctx.JSON(http.StatusOK, gin.H{
-		"msg": "success",
-	})
+	ResponseSuccess(ctx, nil)
 }
 
 func LogInHandler(ctx *gin.Context) {
@@ -55,33 +53,31 @@ func LogInHandler(ctx *gin.Context) {
 	// 从 HTTP 请求中提取参数值，并将这些值绑定到开发者定义的结构体中
 	if err := ctx.ShouldBindJSON(&p); err != nil {
 		zap.L().Error("Log in with invalid param", zap.Error(err))
-		// 判断error是不是validator的错误 是的话翻译 不是不翻译
-		var errs validator.ValidationErrors
-		ok := errors.As(err, &errs)
+		// 判断error是不是validator的错误
+		var validatorErr validator.ValidationErrors
+		// 是否属于validatorErr
+		ok := errors.As(err, &validatorErr)
+		// 不是validator的错误类型返回原error
 		if !ok {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ResponseError(ctx, CodeInvalidParam)
 			return
 		}
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": removeTopStruct(errs.Translate(trans)),
-		})
+		// 是validator的错误类型 翻译错误并返回
+		ResponseErrorWithMsg(ctx, CodeInvalidParam, removeTopStruct(validatorErr.Translate(trans)))
 		return
-
 	}
 
 	// 2 业务处理
 	if err := logic.LogIn(p); err != nil {
 		zap.L().Error("logic.LogIn failed", zap.String("username", p.Username), zap.Error(err))
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"msg": "用户名或密码错误",
-		})
+		if errors.Is(err, mysql.ErrorUserExists) {
+			ResponseError(ctx, CodeUserExist)
+			return
+		}
+		ResponseError(ctx, CodeInvalidPassword)
 		return
 	}
 
 	// 3 返回响应
-	ctx.JSON(http.StatusOK, gin.H{
-		"msg": "登陆成功",
-	})
+	ResponseSuccess(ctx, nil)
 }
