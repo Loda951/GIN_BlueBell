@@ -3,6 +3,7 @@ package logic
 import (
 	"bluebell/DAO/mysql"
 	"bluebell/models"
+	"bluebell/pkg/JWT"
 	snowflake "bluebell/pkg/snowFlake"
 )
 
@@ -25,10 +26,14 @@ func SignUp(p *models.ParamsSignUp) (err error) {
 	return mysql.InsertUser(user)
 }
 
-func LogIn(p *models.ParamsLogIn) error {
+func LogIn(p *models.ParamsLogIn) (token string, err error) {
 	user := &models.User{
 		Username: p.Username,
 		Password: p.Password,
 	}
-	return mysql.LogIn(user)
+	if err := mysql.LogIn(user); err != nil {
+		return "", err
+	}
+	// 生成 JWT
+	return JWT.GenToken(user.UserID, user.Username)
 }

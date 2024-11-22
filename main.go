@@ -3,11 +3,11 @@ package main
 import (
 	"bluebell/DAO/mysql"
 	"bluebell/DAO/redis"
-	"bluebell/controller"
 	"bluebell/logger"
 	snowflake "bluebell/pkg/snowFlake"
 	"bluebell/router"
 	"bluebell/settings"
+	"bluebell/validate"
 	"context"
 	"errors"
 	"fmt"
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	// 初始化gin 内置validator翻译器
-	if err := controller.InitTrans("zh"); err != nil {
+	if err := validate.InitTrans("zh"); err != nil {
 		fmt.Printf("init trans failed, err:%v\n", err)
 		return
 	}

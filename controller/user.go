@@ -4,6 +4,8 @@ import (
 	"bluebell/DAO/mysql"
 	"bluebell/logic"
 	"bluebell/models"
+	"bluebell/utils"
+	"bluebell/validate"
 	"errors"
 
 	"github.com/go-playground/validator/v10"
@@ -25,26 +27,26 @@ func SignUpHandler(ctx *gin.Context) {
 		ok := errors.As(err, &validatorErr)
 		// 不是validator的错误类型返回原error
 		if !ok {
-			ResponseError(ctx, CodeInvalidParam)
+			utils.ResponseError(ctx, utils.CodeInvalidParam)
 			return
 		}
 		// 是validator的错误类型 翻译错误并返回
-		ResponseErrorWithMsg(ctx, CodeInvalidParam, removeTopStruct(validatorErr.Translate(trans)))
+		utils.ResponseErrorWithMsg(ctx, utils.CodeInvalidParam, validate.RemoveTopStruct(validatorErr.Translate(validate.Trans)))
 		return
 	}
 
 	// 2 业务处理
 	if err := logic.SignUp(p); err != nil {
 		if errors.Is(err, mysql.ErrorUserExists) {
-			ResponseError(ctx, CodeUserExist)
+			utils.ResponseError(ctx, utils.CodeUserExist)
 			return
 		}
-		ResponseError(ctx, CodeServerBusy)
+		utils.ResponseError(ctx, utils.CodeServerBusy)
 		return
 	}
 
 	// 3 返回响应
-	ResponseSuccess(ctx, nil)
+	utils.ResponseSuccess(ctx, nil)
 }
 
 func LogInHandler(ctx *gin.Context) {
@@ -59,25 +61,26 @@ func LogInHandler(ctx *gin.Context) {
 		ok := errors.As(err, &validatorErr)
 		// 不是validator的错误类型返回原error
 		if !ok {
-			ResponseError(ctx, CodeInvalidParam)
+			utils.ResponseError(ctx, utils.CodeInvalidParam)
 			return
 		}
 		// 是validator的错误类型 翻译错误并返回
-		ResponseErrorWithMsg(ctx, CodeInvalidParam, removeTopStruct(validatorErr.Translate(trans)))
+		utils.ResponseErrorWithMsg(ctx, utils.CodeInvalidParam, validate.RemoveTopStruct(validatorErr.Translate(validate.Trans)))
 		return
 	}
 
 	// 2 业务处理
-	if err := logic.LogIn(p); err != nil {
+	token, err := logic.LogIn(p)
+	if err != nil {
 		zap.L().Error("logic.LogIn failed", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserExists) {
-			ResponseError(ctx, CodeUserExist)
+			utils.ResponseError(ctx, utils.CodeUserExist)
 			return
 		}
-		ResponseError(ctx, CodeInvalidPassword)
+		utils.ResponseError(ctx, utils.CodeInvalidPassword)
 		return
 	}
 
 	// 3 返回响应
-	ResponseSuccess(ctx, nil)
+	utils.ResponseSuccess(ctx, token)
 }
