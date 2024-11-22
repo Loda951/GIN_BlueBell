@@ -1,11 +1,13 @@
 package main
 
 import (
-	"Gin_Scaffold/DAO/mysql"
-	"Gin_Scaffold/DAO/redis"
-	"Gin_Scaffold/logger"
-	"Gin_Scaffold/router"
-	"Gin_Scaffold/settings"
+	"bluebell/DAO/mysql"
+	"bluebell/DAO/redis"
+	"bluebell/logger"
+	snowflake "bluebell/pkg/snowFlake"
+	"bluebell/router"
+	"bluebell/settings"
+	"bluebell/validate"
 	"context"
 	"errors"
 	"fmt"
@@ -29,7 +31,7 @@ func main() {
 	}
 
 	// 2. 初始化日志
-	if err := logger.InitLogger(settings.Config.LogConfig); err != nil {
+	if err := logger.InitLogger(settings.Config.LogConfig, settings.Config.Mode); err != nil {
 		fmt.Printf("init logger failed, err:%v\n", err)
 		return
 	}
@@ -50,12 +52,24 @@ func main() {
 	}
 	defer redis.CloseRedis()
 
+	// 初始化雪花分布式算法
+	if err := snowflake.Init(settings.Config.StartTime, settings.Config.MachineID); err != nil {
+		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
+
+	// 初始化gin 内置validator翻译器
+	if err := validate.InitTrans("zh"); err != nil {
+		fmt.Printf("init trans failed, err:%v\n", err)
+		return
+	}
+
 	// 5. 注册路由
-	r := router.SetupRouter()
+	r := router.SetupRouter(settings.Config.Mode)
 
 	// 6. 启动服务(优雅关机)
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", viper.GetInt("app.port")),
+		Addr:    fmt.Sprintf(":%d", viper.GetInt("port")),
 		Handler: r,
 	}
 

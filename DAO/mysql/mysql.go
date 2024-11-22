@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"Gin_Scaffold/settings"
+	"bluebell/settings"
 	"fmt"
 
 	"go.uber.org/zap"
