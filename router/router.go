@@ -21,12 +21,16 @@ func SetupRouter(mode string) *gin.Engine {
 	})
 
 	// 注册
-	router.POST("/signup", controller.SignUpHandler)
-	router.POST("/login", controller.LogInHandler)
+	api := router.Group("/api")
+	{
+		// 注册相关路由
+		api.POST("/signup", controller.SignUpHandler)
+		api.POST("/login", controller.LogInHandler)
 
-	router.GET("/ping", middlewares.JWTAuthMiddleware(), func(ctx *gin.Context) {
-		// 如果是登陆用户 判断请求头是否有 有效的JWT
-		ctx.JSON(http.StatusOK, "ok")
-	})
+		// 需要JWT认证的路由
+		api.GET("/ping", middlewares.JWTAuthMiddleware(), func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, "ok")
+		})
+	}
 	return router
 }
