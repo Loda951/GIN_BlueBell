@@ -8,13 +8,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// 错误变量
-var (
-	ErrorUserExists      = errors.New("user already exists")
-	ErrorUserNotFound    = errors.New("user not found")
-	ErrorInvalidPassword = errors.New("invalid password")
-)
-
 // 把每一个数据库操作封装成一个函数
 // 待logic层根据业务需求调用
 
