@@ -9,30 +9,31 @@ import (
 	"go.uber.org/zap"
 )
 
-func CommunityHandler(c *gin.Context) {
+func CommunityHandler(ctx *gin.Context) {
 	data, err := logic.GetCommunityList()
 	if err != nil {
 		zap.L().Error("logic.GetCommunityList() failed", zap.Error(err))
-		utils.ResponseError(c, utils.CodeServerBusy)
+		utils.ResponseError(ctx, utils.CodeServerBusy)
 		return
 	}
-	utils.ResponseSuccess(c, data)
+	utils.ResponseSuccess(ctx, data)
 }
 
-func CommunityDetailHandler(c *gin.Context) {
+func CommunityDetailHandler(ctx *gin.Context) {
 	// 获取参数
-	idStr := c.Param("id")
+	idStr := ctx.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		utils.ResponseError(c, utils.CodeInvalidParam)
+		zap.L().Error("get community detail with invalid param", zap.Error(err))
+		utils.ResponseError(ctx, utils.CodeInvalidParam)
 		return
 	}
 
 	data, err := logic.GetCommunityDetail(id)
 	if err != nil {
 		zap.L().Error("logic.GetCommunityDetail() failed", zap.Error(err))
-		utils.ResponseError(c, utils.CodeServerBusy)
+		utils.ResponseError(ctx, utils.CodeServerBusy)
 		return
 	}
-	utils.ResponseSuccess(c, data)
+	utils.ResponseSuccess(ctx, data)
 }

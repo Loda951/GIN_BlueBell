@@ -214,3 +214,35 @@
 {"level":"ERROR","time":"2024-11-23T17:42:15.889+0800","caller":"controller/community.go:33","msg":"logic.GetCommunityDetail() failed","error":"invalid ID"}
 {"level":"INFO","time":"2024-11-23T17:42:15.889+0800","caller":"logger/logger.go:83","msg":"/api/community/12","status":400,"method":"GET","path":"/api/community/12","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.003662042}
 {"level":"INFO","time":"2024-11-23T17:42:50.842+0800","caller":"logger/logger.go:83","msg":"/api/community/3","status":200,"method":"GET","path":"/api/community/3","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.002507917}
+{"level":"DEBUG","time":"2024-11-23T19:37:08.835+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-23T19:38:47.038+0800","caller":"logger/logger.go:83","msg":"/api/post","status":404,"method":"POST","path":"/api/post","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.000002416}
+{"level":"DEBUG","time":"2024-11-23T19:39:19.730+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-23T19:39:32.082+0800","caller":"controller/post.go:33","msg":"logic.Createpost() failed","error":"Error 1146 (42S02): Table 'bluebell_db.posts' doesn't exist"}
+{"level":"INFO","time":"2024-11-23T19:39:32.082+0800","caller":"logger/logger.go:83","msg":"/api/post","status":400,"method":"POST","path":"/api/post","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.039931167}
+{"level":"DEBUG","time":"2024-11-23T19:40:08.426+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-23T19:40:40.860+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-23T19:40:42.622+0800","caller":"controller/post.go:33","msg":"logic.CreatePost() failed","error":"Error 1146 (42S02): Table 'bluebell_db.posts' doesn't exist"}
+{"level":"INFO","time":"2024-11-23T19:40:42.623+0800","caller":"logger/logger.go:83","msg":"/api/post","status":400,"method":"POST","path":"/api/post","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.004030541}
+{"level":"DEBUG","time":"2024-11-23T19:40:52.647+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-23T19:40:53.779+0800","caller":"logger/logger.go:83","msg":"/api/post","status":200,"method":"POST","path":"/api/post","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.026096833}
+{"level":"DEBUG","time":"2024-11-23T19:42:15.334+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"DEBUG","time":"2024-11-23T19:51:25.923+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-23T19:51:33.989+0800","caller":"mysql/post.go:29","msg":"failed to query post detail","error":"Error 1054 (42S22): Unknown column 'conmmunity_id' in 'field list'"}
+{"level":"ERROR","time":"2024-11-23T19:51:33.989+0800","caller":"controller/post.go:56","msg":"logic.GetPostDetail() failed","error":"Error 1054 (42S22): Unknown column 'conmmunity_id' in 'field list'"}
+{"level":"INFO","time":"2024-11-23T19:51:33.990+0800","caller":"logger/logger.go:83","msg":"/api/post/1","status":400,"method":"GET","path":"/api/post/1","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.002981292}
+{"level":"DEBUG","time":"2024-11-23T19:52:07.845+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"ERROR","time":"2024-11-23T19:52:09.432+0800","caller":"mysql/post.go:29","msg":"failed to query post detail","error":"Error 1054 (42S22): Unknown column 'community' in 'field list'"}
+{"level":"ERROR","time":"2024-11-23T19:52:09.432+0800","caller":"controller/post.go:56","msg":"logic.GetPostDetail() failed","error":"Error 1054 (42S22): Unknown column 'community' in 'field list'"}
+{"level":"INFO","time":"2024-11-23T19:52:09.433+0800","caller":"logger/logger.go:83","msg":"/api/post/1","status":400,"method":"GET","path":"/api/post/1","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.002439375}
+{"level":"DEBUG","time":"2024-11-23T19:52:18.929+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"WARN","time":"2024-11-23T19:52:20.608+0800","caller":"mysql/post.go:24","msg":"no post detail in DB"}
+{"level":"ERROR","time":"2024-11-23T19:52:20.608+0800","caller":"controller/post.go:56","msg":"logic.GetPostDetail() failed","error":"invalid ID"}
+{"level":"INFO","time":"2024-11-23T19:52:20.608+0800","caller":"logger/logger.go:83","msg":"/api/post/1","status":400,"method":"GET","path":"/api/post/1","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.004315667}
+{"level":"WARN","time":"2024-11-23T19:52:33.140+0800","caller":"mysql/post.go:24","msg":"no post detail in DB"}
+{"level":"ERROR","time":"2024-11-23T19:52:33.140+0800","caller":"controller/post.go:56","msg":"logic.GetPostDetail() failed","error":"invalid ID"}
+{"level":"INFO","time":"2024-11-23T19:52:33.140+0800","caller":"logger/logger.go:83","msg":"/api/post/0","status":400,"method":"GET","path":"/api/post/0","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.000775625}
+{"level":"WARN","time":"2024-11-23T19:53:09.707+0800","caller":"mysql/post.go:24","msg":"no post detail in DB"}
+{"level":"ERROR","time":"2024-11-23T19:53:09.708+0800","caller":"controller/post.go:56","msg":"logic.GetPostDetail() failed","error":"invalid ID"}
+{"level":"INFO","time":"2024-11-23T19:53:09.708+0800","caller":"logger/logger.go:83","msg":"/api/post/1","status":400,"method":"GET","path":"/api/post/1","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.001504917}
+{"level":"DEBUG","time":"2024-11-23T19:53:52.836+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-23T19:53:57.608+0800","caller":"logger/logger.go:83","msg":"/api/post/1","status":200,"method":"GET","path":"/api/post/1","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.002032042}
