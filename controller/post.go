@@ -22,7 +22,7 @@ func CreatPostHandler(ctx *gin.Context) {
 	}
 
 	// 从ctx获取authorID
-	userID, err := utils.GetCurrentUser(ctx)
+	userID, err := utils.GetCurrentUserID(ctx)
 	if err != nil {
 		utils.ResponseError(ctx, utils.CodeNeedLogin)
 		return
@@ -54,6 +54,18 @@ func GetPostDetailHandler(ctx *gin.Context) {
 	data, err := logic.GetPostDetail(id)
 	if err != nil {
 		zap.L().Error("logic.GetPostDetail() failed", zap.Error(err))
+		utils.ResponseError(ctx, utils.CodeServerBusy)
+		return
+	}
+	utils.ResponseSuccess(ctx, data)
+}
+
+func GetPostListHandler(ctx *gin.Context) {
+	// 获取分页信息
+	page, size, err := utils.GetPageInfo(ctx)
+	data, err := logic.GetPostList(page, size)
+	if err != nil {
+		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
 		utils.ResponseError(ctx, utils.CodeServerBusy)
 		return
 	}

@@ -36,6 +36,7 @@ func SetupRouter(mode string) *gin.Engine {
 
 		api.POST("/post", controller.CreatPostHandler)
 		api.GET("/post/:id", controller.GetPostDetailHandler)
+		api.GET("/posts", controller.GetPostListHandler)
 	}
 
 	// 需要JWT认证的路由
