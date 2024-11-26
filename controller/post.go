@@ -84,7 +84,6 @@ func GetPostListHandler2(ctx *gin.Context) {
 		return
 	}
 	// 获取分页信息
-
 	data, err := logic.GetPostListNew(p)
 	if err != nil {
 		zap.L().Error("logic.GetPostList() failed", zap.Error(err))

@@ -17,6 +17,7 @@ func CreatePost(p *models.Post) (err error) {
 	if err != nil {
 		return err
 	}
+	// 3 redis记录时间
 	err = redis.CreatePost(p.ID, p.CommunityID)
 	if err != nil {
 		return err

@@ -8,11 +8,29 @@ import (
 	"github.com/go-redis/redis"
 )
 
-func getIDsFromKey(key string, page, size int64) ([]string, error) {
-	start := (page - 1) * size
-	end := start + size - 1
-	// zrevrange 查询 按分数从大到小
-	return client.ZRange(key, start, end).Result()
+func CreatePost(postID, communityID int64) error {
+	// 创建一个管道
+	pipeline := client.Pipeline()
+
+	// 帖子时间
+	pipeline.ZAdd(getRedisKey(KeyPostTimeZSet), redis.Z{
+		Member: postID,
+		Score:  float64(time.Now().Unix()),
+	})
+
+	// 帖子分数
+	pipeline.ZAdd(getRedisKey(KeyPostScoreZSet), redis.Z{
+		Member: postID,
+		Score:  float64(time.Now().Unix()),
+	})
+
+	cKey := getRedisKey(KeyCommunitySetPrefix + strconv.Itoa(int(communityID)))
+	// 对于set而言 只有 key 和 member 也就是map的名称和k 没有v
+	pipeline.SAdd(cKey, postID)
+
+	// 执行管道中的所有命令
+	_, err := pipeline.Exec()
+	return err
 }
 
 func GetPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
@@ -63,6 +81,12 @@ func GetCommunityPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 			return nil, err
 		}
 	}
-
 	return getIDsFromKey(key, p.Page, p.Size)
+}
+
+func getIDsFromKey(key string, page, size int64) ([]string, error) {
+	start := (page - 1) * size
+	end := start + size - 1
+	// zrevrange 查询 按分数从大到小
+	return client.ZRange(key, start, end).Result()
 }
