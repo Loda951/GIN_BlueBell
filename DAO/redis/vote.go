@@ -32,6 +32,27 @@ var (
 
 */
 
+func CreatePost(postID int64) error {
+	// 创建一个管道
+	pipeline := client.Pipeline()
+
+	// 帖子时间
+	pipeline.ZAdd(getRedisKey(KeyPostTimeZSet), redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: postID,
+	})
+
+	// 帖子分数
+	pipeline.ZAdd(getRedisKey(KeyPostScoreZSet), redis.Z{
+		Score:  float64(time.Now().Unix()),
+		Member: postID,
+	})
+
+	// 执行管道中的所有命令
+	_, err := pipeline.Exec()
+	return err
+}
+
 func PostVote(userID, postID string, nextActionValue float64) error {
 	// 1.判断投票限制
 	postTime := client.ZScore(getRedisKey(KeyPostTimeZSet), postID).Val()
@@ -49,20 +70,21 @@ func PostVote(userID, postID string, nextActionValue float64) error {
 		dir = -1
 	}
 	diff := math.Abs(preActionValue - nextActionValue) // 这里 pre - next or next - pre 都可以
-	_, err := client.ZIncrBy(getRedisKey(KeyPostScoreZSet), dir*diff*scorePerVote, postID).Result()
-	if err != nil {
-		return err
-	}
+
+	pipeline := client.Pipeline()
+
+	pipeline.ZIncrBy(getRedisKey(KeyPostScoreZSet), dir*diff*scorePerVote, postID)
+
 	if nextActionValue == 0 {
-		_, err := client.ZRem(getRedisKey(KeyPostVotedZSetPrefix+postID), userID).Result()
-		if err != nil {
-			return err
-		}
+		pipeline.ZRem(getRedisKey(KeyPostVotedZSetPrefix+postID), userID)
+
 	} else {
-		_, err = client.ZAdd(getRedisKey(KeyPostVotedZSetPrefix+postID), redis.Z{
+		pipeline.ZAdd(getRedisKey(KeyPostVotedZSetPrefix+postID), redis.Z{
 			Score:  nextActionValue,
 			Member: userID,
-		}).Result()
+		})
 	}
+	// 执行管道中的所有命令
+	_, err := pipeline.Exec()
 	return err
 }

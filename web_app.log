@@ -370,3 +370,10 @@
 {"level":"DEBUG","time":"2024-11-25T16:49:11.545+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
 {"level":"DEBUG","time":"2024-11-25T16:49:42.273+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
 {"level":"INFO","time":"2024-11-25T16:50:21.056+0800","caller":"logger/logger.go:83","msg":"/api/posts","status":200,"method":"GET","path":"/api/posts","query":"page=1&size=2","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.005998167}
+{"level":"DEBUG","time":"2024-11-26T10:29:31.177+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-26T10:30:17.807+0800","caller":"logger/logger.go:83","msg":"/api/login","status":200,"method":"POST","path":"/api/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.024097708}
+{"level":"INFO","time":"2024-11-26T10:30:32.740+0800","caller":"logger/logger.go:83","msg":"/api/post","status":200,"method":"POST","path":"/api/post","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.019740209}
+{"level":"ERROR","time":"2024-11-26T10:31:45.519+0800","caller":"controller/vote.go:20","msg":"vote with invalid param","error":"json: invalid use of ,string struct tag, trying to unmarshal \"2212213167230976\" into string"}
+{"level":"INFO","time":"2024-11-26T10:31:45.521+0800","caller":"logger/logger.go:83","msg":"/api/vote","status":400,"method":"POST","path":"/api/vote","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.00208825}
+{"level":"DEBUG","time":"2024-11-26T10:32:50.993+0800","caller":"bluebell/main.go:39","msg":"logger init success..."}
+{"level":"INFO","time":"2024-11-26T10:32:54.215+0800","caller":"logger/logger.go:83","msg":"/api/vote","status":200,"method":"POST","path":"/api/vote","query":"","ip":"::1","user-agent":"PostmanRuntime/7.42.0","errors":"","cost":0.002839625}

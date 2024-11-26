@@ -14,6 +14,6 @@ type ParamsLogIn struct {
 }
 
 type ParamVoteData struct {
-	PostID    string `json:"post_id,string" binding:"required"`
-	Direction int8   `json:"direction,string" binding:"required,oneof=1 0 -1"` // 赞成1 反对-1 0取消
+	PostID    string `json:"post_id" binding:"required"`
+	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1"` // 赞成1 反对-1 0取消
 }
