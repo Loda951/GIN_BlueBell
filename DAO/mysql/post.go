@@ -4,6 +4,9 @@ import (
 	"bluebell/models"
 	"database/sql"
 	"errors"
+	"strings"
+
+	"github.com/jmoiron/sqlx"
 
 	"go.uber.org/zap"
 )
@@ -17,7 +20,12 @@ func CreatePost(p *models.Post) (err error) {
 }
 
 func GetPostList(page, size int64) (posts []*models.Post, err error) {
-	sqlStr := `select post_id, title, content, author_id, community_id, create_time from post limit ?, ?`
+	sqlStr := `select 
+    post_id, title, content, author_id, community_id, create_time 
+	from post
+	ORDER BY create_time
+	DESC 
+    limit ?, ?`
 
 	posts = make([]*models.Post, 0, 2)
 	err = db.Select(&posts, sqlStr, (page-1)*size, size)
@@ -41,4 +49,20 @@ func GetPostDetailByID(id int64) (detail *models.Post, err error) {
 		return nil, err
 	}
 	return detail, nil
+}
+
+func GetPostListByIDs(ids []string) (postsList []*models.Post, err error) {
+	sqlStr := `select post_id, title, content, author_id, community_id, create_time
+	from post
+	where post_id in (?)
+	order by FIND_IN_SET(post_id, ?)
+	`
+
+	query, args, err := sqlx.In(sqlStr, ids, strings.Join(ids, ","))
+	if err != nil {
+		return nil, err
+	}
+	query = db.Rebind(query)
+	db.Select(&postsList, query, args...) // !!!
+	return
 }

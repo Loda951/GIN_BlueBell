@@ -71,3 +71,24 @@ func GetPostListHandler(ctx *gin.Context) {
 	}
 	utils.ResponseSuccess(ctx, data)
 }
+
+func GetPostListHandler2(ctx *gin.Context) {
+	p := &models.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderTime,
+	}
+	if err := ctx.ShouldBindQuery(p); err != nil {
+		zap.L().Error("get post list with invalid param", zap.Error(err))
+		utils.ResponseError(ctx, utils.CodeInvalidParam)
+		return
+	}
+	// 获取分页信息
+	data, err := logic.GetPostList2(p)
+	if err != nil {
+		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+		utils.ResponseError(ctx, utils.CodeServerBusy)
+		return
+	}
+	utils.ResponseSuccess(ctx, data)
+}

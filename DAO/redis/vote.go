@@ -14,7 +14,8 @@ const (
 )
 
 var (
-	ErrorVoteTimeout = errors.New("vote timeout")
+	ErrorVoteTimeout  = errors.New("vote timeout")
+	ErrorVoteRepeated = errors.New("repeated vote are not allowed")
 )
 
 /*
@@ -62,6 +63,9 @@ func PostVote(userID, postID string, nextActionValue float64) error {
 	// 2.更新分数
 	// 先查之前 当前用户 是否对文章表过态(没表态0 点赞1 踩-1)
 	preActionValue := client.ZScore(getRedisKey(KeyPostVotedZSetPrefix+postID), userID).Val()
+	if preActionValue == nextActionValue {
+		return ErrorVoteRepeated
+	}
 	var dir float64
 	// 接下来的 action 可能是(没表态0 点赞1 踩-1)
 	if nextActionValue > preActionValue {

@@ -16,6 +16,7 @@ type Post struct {
 
 type APIPostDetial struct {
 	AuthorName       string `json:"author_name"`
+	VotesNumber      int64  `json:"votes_number"`
 	*Post            `json:"post"`
 	*CommunityDetail `json:"community"`
 }

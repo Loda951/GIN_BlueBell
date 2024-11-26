@@ -17,3 +17,14 @@ type ParamVoteData struct {
 	PostID    string `json:"post_id" binding:"required"`
 	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1"` // 赞成1 反对-1 0取消
 }
+
+type ParamPostList struct {
+	Page  int64  `form:"page"`
+	Size  int64  `form:"size"`
+	Order string `form:"order"`
+}
+
+const (
+	OrderTime  = "time"
+	OrderScore = "score"
+)
