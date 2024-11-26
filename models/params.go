@@ -19,9 +19,14 @@ type ParamVoteData struct {
 }
 
 type ParamPostList struct {
-	Page  int64  `form:"page"`
-	Size  int64  `form:"size"`
-	Order string `form:"order"`
+	CommunityID int64  `form:"community_id" json:"community_id" binding:"omitempty"`
+	Page        int64  `form:"page" json:"page"`
+	Size        int64  `form:"size" json:"size"`
+	Order       string `form:"order" json:"order"`
+}
+
+type ParamCommunityPostList struct {
+	*ParamPostList
 }
 
 const (

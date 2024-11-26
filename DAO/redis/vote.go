@@ -3,6 +3,7 @@ package redis
 import (
 	"errors"
 	"math"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -33,7 +34,7 @@ var (
 
 */
 
-func CreatePost(postID int64) error {
+func CreatePost(postID, communityID int64) error {
 	// 创建一个管道
 	pipeline := client.Pipeline()
 
@@ -48,6 +49,9 @@ func CreatePost(postID int64) error {
 		Score:  float64(time.Now().Unix()),
 		Member: postID,
 	})
+
+	cKey := getRedisKey(KeyCommunitySetPrefix + strconv.Itoa(int(communityID)))
+	pipeline.SAdd(cKey, postID)
 
 	// 执行管道中的所有命令
 	_, err := pipeline.Exec()
