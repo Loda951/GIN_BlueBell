@@ -7,6 +7,7 @@ import (
 	"bluebell/utils"
 	"bluebell/validate"
 	"errors"
+	"fmt"
 
 	"github.com/go-playground/validator/v10"
 
@@ -70,7 +71,7 @@ func LogInHandler(ctx *gin.Context) {
 	}
 
 	// 2 业务处理
-	token, err := logic.LogIn(p)
+	user, err := logic.LogIn(p)
 	if err != nil {
 		zap.L().Error("logic.LogIn failed", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, mysql.ErrorUserExists) {
@@ -81,6 +82,10 @@ func LogInHandler(ctx *gin.Context) {
 		return
 	}
 
-	// 3 返回响应
-	utils.ResponseSuccess(ctx, token)
+	// 3 返回响应 并储存userInfo
+	utils.ResponseSuccess(ctx, gin.H{
+		"user_id":   fmt.Sprintf("%d", user.UserID), // id值大于1<<53-1  int64类型的最大值是1<<63-1
+		"user_name": user.Username,
+		"token":     user.Token,
+	})
 }

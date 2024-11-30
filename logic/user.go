@@ -26,14 +26,19 @@ func SignUp(p *models.ParamsSignUp) (err error) {
 	return mysql.InsertUser(user)
 }
 
-func LogIn(p *models.ParamsLogIn) (token string, err error) {
-	user := &models.User{
+func LogIn(p *models.ParamsLogIn) (user *models.User, err error) {
+	user = &models.User{
 		Username: p.Username,
 		Password: p.Password,
 	}
 	if err := mysql.LogIn(user); err != nil {
-		return "", err
+		return nil, err
 	}
 	// 生成 JWT
-	return JWT.GenToken(user.UserID, user.Username)
+	token, err := JWT.GenToken(user.UserID, user.Username)
+	if err != nil {
+		return
+	}
+	user.Token = token
+	return
 }

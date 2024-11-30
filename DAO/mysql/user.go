@@ -8,13 +8,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// 错误变量
-var (
-	ErrorUserExists      = errors.New("user already exists")
-	ErrorUserNotFound    = errors.New("user not found")
-	ErrorInvalidPassword = errors.New("invalid password")
-)
-
 // 把每一个数据库操作封装成一个函数
 // 待logic层根据业务需求调用
 
@@ -43,22 +36,39 @@ func InsertUser(user *models.User) (err error) {
 	return nil
 }
 
-func LogIn(user *models.User) (err error) {
+func LogIn(user *models.User) error {
+	// 查询语句：获取用户信息
 	sqlStr := `select user_id, username, password from user where username=?`
 	var queryUser models.User
-	err = db.Get(&queryUser, sqlStr, user.Username)
+
+	// 执行数据库查询
+	err := db.Get(&queryUser, sqlStr, user.Username)
 	if errors.Is(err, sql.ErrNoRows) {
-		return ErrorUserNotFound
+		return ErrorUserNotFound // 用户不存在
 	}
 	if err != nil {
-		// 查询数据库失败
-		return err
+		return err // 查询数据库失败
 	}
-	// 判断密码是否正确
+
+	// 校验密码
 	if !checkPassword(queryUser.Password, user.Password) {
-		return ErrorInvalidPassword
+		return ErrorInvalidPassword // 密码错误
 	}
-	return
+
+	// 将查询到的用户信息赋值给传入的 `user`
+	user.UserID = queryUser.UserID
+	user.Username = queryUser.Username
+	return nil
+}
+
+func GetUserByID(id int64) (user *models.User, err error) {
+	user = new(models.User)
+	sqlStr := `select user_id, username from user where user_id=?`
+	err = db.Get(user, sqlStr, id)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 func encryptPassword(password string) string {
