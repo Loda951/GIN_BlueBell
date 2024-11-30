@@ -55,38 +55,20 @@ func GetPostDetail(id int64) (data *models.APIPostDetial, err error) {
 	return
 }
 
-func GetPostList(page, size int64) (data []*models.APIPostDetial, err error) {
-	posts, err := mysql.GetPostList(page, size)
-	if err != nil {
-		zap.L().Error("mysql.GetPostList()", zap.Error(err))
-		return nil, err
+func GetPostListNew(p *models.ParamPostList) (data []*models.APIPostDetial, err error) {
+	if p.CommunityID == 0 {
+		data, err = GetPostList(p)
+	} else {
+		data, err = GetCommunityPostList(p)
 	}
-	data = make([]*models.APIPostDetial, 0, len(posts))
-	for _, post := range posts {
-		// 根据作者id查询作者信息
-		user, err := mysql.GetUserByID(post.AuthorID)
-		if err != nil {
-			zap.L().Error("mysql.GetUserByID()", zap.Error(err))
-			return nil, err
-		}
-
-		// 根据社区id查询社区信息
-		community, err := mysql.GetCommunityDetailByID(post.CommunityID)
-		if err != nil {
-			zap.L().Error("mysql.GetCommunityDetailByID()", zap.Error(err))
-			return nil, err
-		}
-		postDetail := &models.APIPostDetial{
-			AuthorName:      user.Username,
-			Post:            post,
-			CommunityDetail: community,
-		}
-		data = append(data, postDetail)
+	if err != nil {
+		zap.L().Error("logic.GetPostListNew()", zap.Error(err))
+		return nil, err
 	}
 	return
 }
 
-func GetPostList2(p *models.ParamPostList) (data []*models.APIPostDetial, err error) {
+func GetPostList(p *models.ParamPostList) (data []*models.APIPostDetial, err error) {
 	ids, err := redis.GetPostIDsInOrder(p)
 	if err != nil {
 		return nil, err
@@ -176,15 +158,33 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.APIPostDetial
 	return
 }
 
-func GetPostListNew(p *models.ParamPostList) (data []*models.APIPostDetial, err error) {
-	if p.CommunityID == 0 {
-		data, err = GetPostList2(p)
-	} else {
-		data, err = GetCommunityPostList(p)
-	}
-	if err != nil {
-		zap.L().Error("logic.GetPostListNew()", zap.Error(err))
-		return nil, err
-	}
-	return
-}
+//func GetPostList(page, size int64) (data []*models.APIPostDetial, err error) {
+//	posts, err := mysql.GetPostList(page, size)
+//	if err != nil {
+//		zap.L().Error("mysql.GetPostList()", zap.Error(err))
+//		return nil, err
+//	}
+//	data = make([]*models.APIPostDetial, 0, len(posts))
+//	for _, post := range posts {
+//		// 根据作者id查询作者信息
+//		user, err := mysql.GetUserByID(post.AuthorID)
+//		if err != nil {
+//			zap.L().Error("mysql.GetUserByID()", zap.Error(err))
+//			return nil, err
+//		}
+//
+//		// 根据社区id查询社区信息
+//		community, err := mysql.GetCommunityDetailByID(post.CommunityID)
+//		if err != nil {
+//			zap.L().Error("mysql.GetCommunityDetailByID()", zap.Error(err))
+//			return nil, err
+//		}
+//		postDetail := &models.APIPostDetial{
+//			AuthorName:      user.Username,
+//			Post:            post,
+//			CommunityDetail: community,
+//		}
+//		data = append(data, postDetail)
+//	}
+//	return
+//}

@@ -61,18 +61,6 @@ func GetPostDetailHandler(ctx *gin.Context) {
 }
 
 func GetPostListHandler(ctx *gin.Context) {
-	// 获取分页信息
-	page, size, err := utils.GetPageInfo(ctx)
-	data, err := logic.GetPostList(page, size)
-	if err != nil {
-		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
-		utils.ResponseError(ctx, utils.CodeServerBusy)
-		return
-	}
-	utils.ResponseSuccess(ctx, data)
-}
-
-func GetPostListHandler2(ctx *gin.Context) {
 	p := &models.ParamPostList{
 		Page:  1,
 		Size:  10,
@@ -92,3 +80,15 @@ func GetPostListHandler2(ctx *gin.Context) {
 	}
 	utils.ResponseSuccess(ctx, data)
 }
+
+//func GetPostListHandler(ctx *gin.Context) {
+//	// 获取分页信息
+//	page, size, err := utils.GetPageInfo(ctx)
+//	data, err := logic.GetPostList(page, size)
+//	if err != nil {
+//		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+//		utils.ResponseError(ctx, utils.CodeServerBusy)
+//		return
+//	}
+//	utils.ResponseSuccess(ctx, data)
+//}

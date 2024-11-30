@@ -85,8 +85,11 @@ func GetCommunityPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 }
 
 func getIDsFromKey(key string, page, size int64) ([]string, error) {
+	// 索引从0开始 -1 减去的基本都是0这个考虑
 	start := (page - 1) * size
 	end := start + size - 1
 	// zrevrange 查询 按分数从大到小
-	return client.ZRange(key, start, end).Result()
+	// zrange 从小到大
+	// 根据ZSet中的 score 值，从小到大排序后返回对应的 member 列表
+	return client.ZRevRange(key, start, end).Result()
 }
